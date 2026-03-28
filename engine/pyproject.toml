@@ -39,12 +39,12 @@ classifiers = [
 dynamic = ["dependencies"]
 
 [project.urls]
-Homepage = "https://github.com/JustAGhosT/codeflow-engine/tree/master/engine"
-Documentation = "https://github.com/JustAGhosT/codeflow-engine/tree/master/docs"
-Repository = "https://github.com/JustAGhosT/codeflow-engine"
-"Bug Tracker" = "https://github.com/JustAGhosT/codeflow-engine/issues"
-Changelog = "https://github.com/JustAGhosT/codeflow-engine/blob/master/engine/CHANGELOG.md"
-Discussions = "https://github.com/JustAGhosT/codeflow-engine/discussions"
+Homepage = "https://github.com/phoenixvc/codeflow-engine/tree/master/engine"
+Documentation = "https://github.com/phoenixvc/codeflow-engine/tree/master/docs"
+Repository = "https://github.com/phoenixvc/codeflow-engine"
+"Bug Tracker" = "https://github.com/phoenixvc/codeflow-engine/issues"
+Changelog = "https://github.com/phoenixvc/codeflow-engine/blob/master/engine/CHANGELOG.md"
+Discussions = "https://github.com/phoenixvc/codeflow-engine/discussions"
 
 [project.scripts]
 codeflow = "codeflow_engine.cli.main:main"
@@ -120,12 +120,12 @@ alembic = "^1.17.2"
 
 # Deprecated: Use [project.urls] instead (kept for backward compatibility)
 [tool.poetry.urls]
-Homepage = "https://github.com/JustAGhosT/codeflow-engine/tree/master/engine"
-Documentation = "https://github.com/JustAGhosT/codeflow-engine/tree/master/docs"
-Repository = "https://github.com/JustAGhosT/codeflow-engine"
-"Bug Tracker" = "https://github.com/JustAGhosT/codeflow-engine/issues"
-Changelog = "https://github.com/JustAGhosT/codeflow-engine/blob/master/engine/CHANGELOG.md"
-Discussions = "https://github.com/JustAGhosT/codeflow-engine/discussions"
+Homepage = "https://github.com/phoenixvc/codeflow-engine/tree/master/engine"
+Documentation = "https://github.com/phoenixvc/codeflow-engine/tree/master/docs"
+Repository = "https://github.com/phoenixvc/codeflow-engine"
+"Bug Tracker" = "https://github.com/phoenixvc/codeflow-engine/issues"
+Changelog = "https://github.com/phoenixvc/codeflow-engine/blob/master/engine/CHANGELOG.md"
+Discussions = "https://github.com/phoenixvc/codeflow-engine/discussions"
 
 # Deprecated: Use [project.scripts] instead (kept for backward compatibility)
 [tool.poetry.scripts]
