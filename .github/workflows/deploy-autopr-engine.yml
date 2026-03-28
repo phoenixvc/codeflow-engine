@@ -246,7 +246,7 @@ jobs:
               regionAbbr=san \
               location=eastus2 \
               customDomain=app.codeflow.io \
-              containerImage=ghcr.io/justaghost/codeflow-engine:latest \
+              containerImage=ghcr.io/phoenixvc/codeflow-engine:latest \
               postgresLogin="${{ steps.passwords.outputs.postgres_login }}" \
               postgresPassword="${{ steps.passwords.outputs.postgres_password }}" \
               redisPassword="${{ steps.passwords.outputs.redis_password }}"
