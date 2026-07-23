@@ -5,13 +5,15 @@ param(
     [Parameter(Mandatory = $true)]
     [string]$TenantId,
 
-    [string]$IdentityResourceGroup = "prod-rg-san-codeflow-identity",
+    [string]$IdentityResourceGroup = "pvc-prod-codeflow-identity-rg",
 
-    [string]$DeploymentResourceGroup = "prod-rg-san-codeflow",
+    [string]$DeploymentResourceGroup = "pvc-prod-codeflow-rg",
+
+    [string]$ContainerRegistryName = "pvcprodcodeflowacr",
 
     [string]$Location = "southafricanorth",
 
-    [string]$IdentityName = "prod-uami-san-codeflow-github",
+    [string]$IdentityName = "pvc-prod-codeflow-github-mi",
 
     [string]$GitHubOwner = "phoenixvc",
 
@@ -60,11 +62,23 @@ $deploymentRgId = Invoke-Az group show `
     --query id `
     --output tsv
 
+$containerRegistryId = Invoke-Az acr show `
+    --name $ContainerRegistryName `
+    --resource-group $DeploymentResourceGroup `
+    --query id `
+    --output tsv
+
 Invoke-Az role assignment create `
     --assignee-object-id $identity.principalId `
     --assignee-principal-type ServicePrincipal `
     --role Contributor `
     --scope $deploymentRgId | Out-Null
+
+Invoke-Az role assignment create `
+    --assignee-object-id $identity.principalId `
+    --assignee-principal-type ServicePrincipal `
+    --role AcrPush `
+    --scope $containerRegistryId | Out-Null
 
 $subject = "repo:${GitHubOwner}/${GitHubRepository}:environment:${GitHubEnvironment}"
 
@@ -81,5 +95,6 @@ Invoke-Az identity federated-credential create `
     AZURE_TENANT_ID       = $selectedTenantId
     AZURE_SUBSCRIPTION_ID = $SubscriptionId
     AZURE_RESOURCE_GROUP  = $DeploymentResourceGroup
-    AZURE_CONTAINER_APP   = "prod-codeflow-san-app"
+    AZURE_CONTAINER_APP   = "pvc-prod-codeflow-api"
+    AZURE_CONTAINER_REGISTRY = $ContainerRegistryName
 } | Format-List

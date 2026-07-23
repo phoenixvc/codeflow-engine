@@ -11,7 +11,7 @@ variable "tenant_id" {
 variable "resource_group_name" {
   description = "Resource group for Codeflow website hosting."
   type        = string
-  default     = "prod-rg-san-codeflow"
+  default     = "pvc-prod-codeflow-rg"
 }
 
 variable "location" {
@@ -23,7 +23,7 @@ variable "location" {
 variable "static_web_app_name" {
   description = "Azure Static Web App resource name."
   type        = string
-  default     = "prod-stapp-san-codeflow"
+  default     = "pvc-prod-codeflow-swa"
 }
 
 variable "custom_domain" {

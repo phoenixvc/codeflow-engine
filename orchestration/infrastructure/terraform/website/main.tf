@@ -15,6 +15,13 @@ resource "azurerm_static_web_app" "website" {
   preview_environments_enabled  = true
   public_network_access_enabled = true
 
+  lifecycle {
+    ignore_changes = [
+      repository_branch,
+      repository_url
+    ]
+  }
+
   tags = var.tags
 }
 

@@ -69,6 +69,13 @@ Thumbs.db
 # Build artifacts
 build-artifacts/
 
+# Terraform local artifacts
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+tfplan
+
 # Credentials and sensitive files
 .credentials-*.json
 deployment-output.json
