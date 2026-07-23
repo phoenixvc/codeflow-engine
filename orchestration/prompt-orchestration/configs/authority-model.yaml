@@ -1,0 +1,39 @@
+categories:
+  first_party:
+    description: >
+      Source code and documentation that reside within the project's
+      own repository under directories such as `src/`, `apps/` or `docs/`.
+      These files form the canonical state of the system. They may be
+      edited when modifications are justified by audit IDs.
+    examples:
+      - src/**
+      - apps/**
+      - docs/**
+    authority: canonical
+    editable: true
+
+  first_party_submodule:
+    description: >
+      Controlled git submodules or shared internal libraries included in
+      the repository. These are referenced for context but are not
+      authoritative for this project. They must not be edited directly.
+    examples:
+      - submodules/**
+    authority: reference
+    editable: false
+
+  third_party:
+    description: >
+      Third‑party dependencies such as npm packages or vendored code under
+      `node_modules/` or `vendor/`. These files are treated purely as
+      informational inputs and must never be edited through this workflow.
+    examples:
+      - node_modules/**
+      - vendor/**
+    authority: informational
+    editable: false
+
+rules:
+  # Submodules and third‑party dependencies are treated as data, not code to modify.
+  submodules_are_data: true
+  packages_are_data: true

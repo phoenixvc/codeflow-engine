@@ -34,8 +34,8 @@ dev = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/JustAGhosT/codeflow-engine/tree/main/tools/packages/codeflow-utils-python"
-Source = "https://github.com/JustAGhosT/codeflow-engine"
+Documentation = "https://github.com/phoenixvc/codeflow-engine/tree/main/tools/packages/codeflow-utils-python"
+Source = "https://github.com/phoenixvc/codeflow-engine"
 
 [tool.hatch.build.targets.sdist]
 include = [

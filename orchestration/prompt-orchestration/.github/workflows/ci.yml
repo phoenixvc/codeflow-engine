@@ -1,0 +1,69 @@
+name: Governance CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Verify commit messages and changed files
+        env:
+          # Audit ID regex pattern; adjust categories as needed.
+          AUDIT_ID_PATTERN: '(BUG|UX|PERF|REF|FEATURE|DOC|TD)-[0-9]+'
+        run: |
+          set -e
+          # Determine commit range.  For pull requests, use the merge base.  Otherwise check the last commit.
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
+            base_sha=$(jq -r '.pull_request.base.sha' < "$GITHUB_EVENT_PATH")
+            head_sha=$(jq -r '.pull_request.head.sha' < "$GITHUB_EVENT_PATH")
+            range="$base_sha..$head_sha"
+          else
+            # For push events, compare against the previous commit on the same branch.
+            range="HEAD^..HEAD"
+          fi
+
+          echo "Checking commits in range $range"
+          # Extract commit messages in the range.
+          messages=$(git log --pretty=%B --no-merges "$range")
+          ok=1
+          while IFS= read -r msg; do
+            # Skip empty lines produced by git log when multiple commits exist
+            if [ -z "$msg" ]; then
+              continue
+            fi
+            echo "Evaluating commit message: $msg"
+            if ! echo "$msg" | grep -Eq "$AUDIT_ID_PATTERN"; then
+              echo "::error::Commit message does not contain a valid audit ID (expected pattern $AUDIT_ID_PATTERN): $msg"
+              ok=0
+            fi
+          done <<< "$messages"
+
+          # Determine changed files in the range.
+          changed=$(git diff --name-only "$range")
+          echo "Changed files: $changed"
+          for file in $changed; do
+            # Allow modifications in specific directories or root README.
+            case "$file" in
+              prompts/*|configs/*|docs/*|schemas/*|.github/*|src/*|tests/*|README.md)
+                echo "File $file is within allowed directories.";;
+              *)
+                echo "::error::File $file is outside permitted directories.  Modify only prompts/, configs/, docs/, schemas/, .github/, src/, tests/ or README.md."
+                ok=0;;
+            esac
+          done
+
+          if [ "$ok" -ne 1 ]; then
+            echo "Governance checks failed."
+            exit 1
+          else
+            echo "All governance checks passed."
+          fi
