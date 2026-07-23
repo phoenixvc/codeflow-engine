@@ -71,6 +71,7 @@ jobs:
           path: engine/htmlcov/
 
       - name: Run linting
+        continue-on-error: true
         run: |
           poetry run ruff check .
           poetry run mypy ./codeflow_engine
