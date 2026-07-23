@@ -44,7 +44,7 @@ jobs:
           poetry install --with dev --no-root
 
       - name: Install package
-        run: poetry install --no-dev
+        run: poetry install --only-root
 
       - name: Run tests with coverage
         run: |
@@ -73,7 +73,7 @@ jobs:
       - name: Run linting
         run: |
           poetry run ruff check .
-          poetry run mypy codeflow_engine
+          poetry run mypy ./codeflow_engine
 
   build:
     runs-on: ubuntu-latest
