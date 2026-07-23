@@ -104,31 +104,3 @@ jobs:
           else
             echo "Note: Output directory 'website/out' not found - Next.js may use different output config"
           fi
-
-  deploy_infrastructure:
-    name: Deploy Azure Infrastructure
-    runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Azure Login
-        uses: azure/login@v2
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-
-      - name: Create Resource Group
-        run: |
-          az group create \
-            --name "${{ env.ENVIRONMENT }}-rg-${{ env.REGION_ABBR }}-codeflow" \
-            --location "${{ env.LOCATION }}" \
-            --output none
-
-      - name: Deploy Bicep Template
-        run: |
-          az deployment group create \
-            --resource-group "${{ env.ENVIRONMENT }}-rg-${{ env.REGION_ABBR }}-codeflow" \
-            --template-file orchestration/infrastructure/bicep/website.bicep \
-            --parameters @orchestration/infrastructure/bicep/website-parameters.json \
-            --parameters regionAbbr=${{ env.REGION_ABBR }}

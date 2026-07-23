@@ -1,120 +1,51 @@
-﻿# CodeFlow Infrastructure
+# Codeflow Infrastructure
 
-Production infrastructure as code (IaC) for CodeFlow - the source of truth for live environments.
+This directory is the canonical home for Codeflow product-specific infrastructure inside the
+`codeflow-engine` monorepo.
 
-## Purpose
+## Ownership
 
-This repository contains CodeFlow-specific infrastructure definitions using Bicep and Terraform. This is where "real" infrastructure lives and is deployed from.
+- Product infrastructure lives here with the application code it deploys.
+- Shared org DNS lives in `org-meta/infra/org-dns/phoenixvc-tech`.
+- Legacy split repositories such as `codeflow-infrastructure`, `codeflow-website`, and
+  `codeflow-plugins` are historical or release-maintenance references, not new live-infra homes.
 
-**Important**: This repository contains production-grade, CodeFlow-specific infrastructure. For generic bootstrap scripts that can be used for any repository, see [`codeflow-azure-setup`](https://github.com/JustAGhosT/codeflow-azure-setup).
+## Active Stacks
 
-## Infrastructure Components
+### Website Terraform
 
-### 1. CodeFlow Engine Application (`bicep/codeflow-engine.bicep`)
+Path: `terraform/website`
 
-Production-ready infrastructure for the CodeFlow Engine application:
-- **Azure Container Apps**: Serverless container hosting
-- **Azure Database for PostgreSQL**: Primary database
-- **Azure Cache for Redis**: Caching and session storage
-- **Log Analytics Workspace**: Centralized logging
+This stack creates the Azure Static Web App for the temporary launch hostname
+`codeflow.phoenixvc.tech`.
 
-See [README-CODEFLOW-ENGINE.md](bicep/README-CODEFLOW-ENGINE.md) for deployment instructions.
+Use the sequence documented in [terraform/website/README.md](terraform/website/README.md):
 
-### 2. Website (`bicep/website.bicep`)
+1. Plan/apply the Static Web App with `enable_custom_domain=false`.
+2. Pass the Static Web App default hostname to the org-meta DNS stack.
+3. Apply the `codeflow.phoenixvc.tech` CNAME in org-meta.
+4. Re-plan this stack with `enable_custom_domain=true` for the Azure custom-domain binding.
 
-Marketing website infrastructure:
-- **Azure Static Web Apps**: Hosting for Next.js website
+Do not use `codeflow.io` until domain ownership and brand risk are resolved.
 
-See [README-WEBSITE.md](bicep/README-WEBSITE.md) for deployment instructions.
+## Legacy Bicep
 
-### 3. Legacy Infrastructure (`bicep/main.bicep`)
+The `bicep` directory is retained for history and migration reference:
 
-Original infrastructure template (AKS, ACR, PostgreSQL, Redis):
-- **Azure Kubernetes Service (AKS)**: Container orchestration
-- **Azure Container Registry (ACR)**: Container image storage
-- **PostgreSQL**: Database server
-- **Redis**: Cache server
+- `bicep/codeflow-engine.bicep` - Container Apps shaped runtime stack.
+- `bicep/website.bicep` - legacy Static Web App template.
+- `bicep/main.bicep` - older AKS-shaped stack.
 
-## Deployment Options
+Prefer Terraform for new durable live infrastructure unless there is a deliberate Azure-native
+exception documented next to the stack.
 
-### Bicep (Recommended for Azure)
+## Naming
 
-Bicep is the native Azure IaC language and is recommended for Azure deployments:
+Current Codeflow resource names use:
 
-**CodeFlow Engine:**
-```bash
-bash bicep/deploy-codeflow-engine.sh prod san "eastus2"
-```
+- Resource group: `prod-rg-san-codeflow`
+- Website Static Web App: `prod-stapp-san-codeflow`
+- Runtime Container App: `prod-codeflow-san-app`
 
-**Website:**
-```bash
-az group create --name prod-rg-san-codeflow --location "eastus2"
-az deployment group create \
-  --resource-group prod-rg-san-codeflow \
-  --template-file bicep/website.bicep \
-  --parameters @bicep/website-parameters.json
-```
-
-### Terraform
-
-Terraform is located in the `terraform` directory and provides a cloud-agnostic option:
-
-```bash
-cd terraform
-terraform init
-terraform plan
-terraform apply
-```
-
-## Naming Convention
-
-All resources follow the pattern: `{env}-{resourcetype}-{region}-codeflow`
-
-- **env**: Environment (prod, dev, staging)
-- **resourcetype**: Resource type abbreviation (stapp, codeflow, rg, etc.)
-- **region**: Azure region abbreviation (san, eus, wus, etc.)
-
-Examples:
-- `prod-stapp-san-codeflow` - Static Web App
-- `prod-codeflow-san-app` - Container App
-- `prod-rg-san-codeflow` - Resource Group
-
-## Repository Structure
-
-```
-codeflow-infrastructure/
-â”œâ”€â”€ bicep/              # Bicep templates
-â”‚   â”œâ”€â”€ codeflow-engine.bicep
-â”‚   â”œâ”€â”€ website.bicep
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ terraform/          # Terraform configurations
-â”‚   â”œâ”€â”€ main.tf
-â”‚   â””â”€â”€ ...
-â”œâ”€â”€ .github/
-â”‚   â””â”€â”€ workflows/     # Deployment workflows
-â””â”€â”€ README.md
-```
-
-## Boundary Rules
-
-**This repository contains**:
-- âœ… CodeFlow-specific infrastructure
-- âœ… Production environments (prod/dev/uat)
-- âœ… Real infrastructure that is source of truth
-- âœ… Deployment workflows
-
-**This repository does NOT contain**:
-- âŒ Generic bootstrap scripts (see `codeflow-azure-setup`)
-- âŒ Application code (see `codeflow-engine`)
-- âŒ Reusable, org-agnostic scripts
-
-## CI/CD
-
-Deployment workflows are located in `.github/workflows/` and can:
-- Trigger deployments for specific environments
-- Coordinate deployments across multiple repositories
-- Manage infrastructure lifecycle
-
-## License
-
-MIT
+Keep future names aligned with `{env}-{resource-type}-{region}-codeflow` unless a provider
+constraint requires otherwise.

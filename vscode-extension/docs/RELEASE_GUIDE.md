@@ -19,8 +19,8 @@ This guide covers the complete process of building, testing, and publishing the 
 ### 1. Clone and Install
 
 ```bash
-git clone https://github.com/JustAGhosT/codeflow-vscode-extension.git
-cd codeflow-vscode-extension
+git clone https://github.com/phoenixvc/codeflow-engine.git
+cd codeflow-engine/vscode-extension
 npm install
 ```
 
@@ -57,7 +57,7 @@ npm run package
 This creates a `.vsix` file in the root directory:
 
 ``` text
-codeflow-vscode-extension-1.0.10.vsix
+codeflow-1.0.10.vsix
 ```
 
 ### Verify Package
@@ -67,7 +67,7 @@ codeflow-vscode-extension-1.0.10.vsix
 npm install -g @vscode/vsce
 
 # Check package contents
-vsce ls codeflow-vscode-extension-*.vsix
+vsce ls codeflow-*.vsix
 ```
 
 ---
@@ -323,5 +323,5 @@ vsce login <publisher-id>
 
 For issues or questions:
 
-- GitHub Issues: [codeflow-vscode-extension/issues](https://github.com/JustAGhosT/codeflow-vscode-extension/issues)
+- GitHub Issues: [codeflow-engine/issues](https://github.com/phoenixvc/codeflow-engine/issues)
 - Documentation: [README.md](./README.md)

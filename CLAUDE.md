@@ -38,6 +38,16 @@ cd website && npm install && npm run dev
 - `desktop/` — Tauri + React desktop application
 - `website/` — Next.js marketing and documentation site
 - `orchestration/` — Shared infrastructure, bootstrap assets, release orchestration
+- `orchestration/infrastructure/terraform/website/` — canonical live Terraform stack for the Codeflow website
+
+## Infrastructure Ownership
+
+Codeflow product infrastructure belongs in this monorepo under `orchestration/infrastructure/`.
+Use `orchestration/infrastructure/terraform/website/` for the website launch at `codeflow.phoenixvc.tech`.
+
+The DNS record for `codeflow.phoenixvc.tech` is owned by `org-meta/infra/org-dns/phoenixvc-tech`; this repo owns the Azure Static Web App and resource-side custom-domain binding.
+
+Do not add new live infrastructure to the legacy `codeflow-infrastructure` split repo unless there is an explicit archival/recovery exception.
 
 ## Migration History
 

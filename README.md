@@ -38,6 +38,15 @@ The Python engine now builds from [engine](engine):
 
 Each imported application can still be developed independently from its subdirectory using its existing package manager and build scripts.
 
+### Infrastructure
+
+Product-specific infrastructure now lives in this monorepo under [orchestration/infrastructure](orchestration/infrastructure).
+The first live Terraform stack is [orchestration/infrastructure/terraform/website](orchestration/infrastructure/terraform/website), which
+creates the Azure Static Web App for `codeflow.phoenixvc.tech`.
+
+DNS records for `phoenixvc.tech` stay in the org control plane at `org-meta/infra/org-dns/phoenixvc-tech`.
+The old `codeflow-infrastructure` split repo is legacy reference material until it is archived.
+
 ## Legacy Repository Redirects
 
 Archive and redirect guidance for the old split repositories is in [docs/LEGACY_REPO_REDIRECTS.md](docs/LEGACY_REPO_REDIRECTS.md).

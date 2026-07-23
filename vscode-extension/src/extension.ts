@@ -294,7 +294,7 @@ export function activate(context: vscode.ExtensionContext) {
         }),
 
         vscode.commands.registerCommand('codeflow.showHelp', () => {
-            vscode.window.showInformationMessage('CodeFlow Help: Visit https://github.com/JustAGhosT/codeflow-engine for documentation');
+            vscode.window.showInformationMessage('CodeFlow Help: Visit https://github.com/phoenixvc/codeflow-engine for documentation');
         }),
 
         vscode.commands.registerCommand('codeflow.checkCompatibility', () => {

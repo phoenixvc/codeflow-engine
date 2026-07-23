@@ -2,8 +2,8 @@
 
 AI-Powered Code Quality and Automation for VS Code
 
-> Canonical source: [vscode-extension](vscode-extension) in the CodeFlow monorepo.
-> Legacy split repo: https://github.com/JustAGhosT/codeflow-vscode-extension
+> Canonical source: `vscode-extension` in the CodeFlow monorepo.
+> Legacy split repo: https://github.com/phoenixvc/codeflow-plugins
 
 ## Features
 
@@ -112,11 +112,9 @@ The extension communicates with CodeFlow Engine via:
 
 ## Related Repositories
 
-- [`codeflow-engine`](https://github.com/JustAGhosT/codeflow-engine) - Core engine (communicates via API)
-- [`codeflow-desktop`](https://github.com/JustAGhosT/codeflow-desktop) - Desktop application
-- [`codeflow-infrastructure`](https://github.com/JustAGhosT/codeflow-infrastructure) - Production infrastructure
-- [`codeflow-azure-setup`](https://github.com/JustAGhosT/codeflow-azure-setup) - Azure bootstrap scripts
-- [`codeflow-website`](https://github.com/JustAGhosT/codeflow-website) - Marketing website
+- [`codeflow-engine`](https://github.com/phoenixvc/codeflow-engine) - Canonical monorepo for engine, website, desktop, orchestration, infrastructure, and extension source
+- [`codeflow-infrastructure`](https://github.com/phoenixvc/codeflow-infrastructure) - Archived split infrastructure history
+- [`codeflow-website`](https://github.com/phoenixvc/codeflow-website) - Archived split website history
 
 ## License
 

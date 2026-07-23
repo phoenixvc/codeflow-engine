@@ -1,12 +1,12 @@
 {
-  "name": "codeflow-vscode-extension",
-  "displayName": "CodeFlow",
-  "description": "AI-Powered Code Quality and Automation for VS Code",
-  "version": "0.2.0-alpha.1",
-  "publisher": "codeflow",
+  "name": "codeflow",
+  "displayName": "CodeFlow by Phoenix VC",
+  "description": "AI-Powered Code Quality and Automation",
+  "version": "1.0.10",
+  "publisher": "phoenixvc",
   "repository": {
     "type": "git",
-    "url": "https://github.com/JustAGhosT/codeflow-engine.git",
+    "url": "https://github.com/phoenixvc/codeflow-engine.git",
     "directory": "vscode-extension"
   },
   "license": "MIT",
