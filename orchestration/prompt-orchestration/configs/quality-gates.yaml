@@ -1,0 +1,27 @@
+severity_levels:
+  - name: Critical
+    description: >
+      Affects security, data integrity or causes system failure. Must be
+      addressed before merge or release. Blocks CI until resolved.
+  - name: High
+    description: >
+      Major issue impacting user experience, performance or compliance. Should
+      be prioritised immediately after all critical items have been fixed.
+  - name: Medium
+    description: >
+      Noticeable issue with moderate impact. Schedule for resolution based
+      on capacity and project priorities.
+  - name: Low
+    description: >
+      Minor issue with minimal impact. Address opportunistically or as part
+      of refactoring.
+
+quality_gates:
+  default:
+    # Commits must contain at least one audit ID (e.g. BUG-01).
+    require_audit_id: true
+    # List of severity levels that block merging or release until resolved.
+    block_merge_on:
+      - Critical
+    # Whether strict mode is enforced by default.
+    enforce_strict_mode: false

@@ -1,0 +1,97 @@
+phases:
+  - id: 0
+    name: Project Context Discovery
+    description: >
+      Establish the business and user context of the project by extracting or
+      inferring the project purpose, goals, target users, key journeys,
+      constraints and success metrics. This phase builds the foundation
+      against which all subsequent work is aligned.
+
+  - id: 1
+    name: Design Specifications & Visual Identity
+    description: >
+      Assemble or reverse‑engineer the design system. Document the colour
+      palette, typography hierarchy, spacing, layout patterns, component library,
+      accessibility baseline and overall visual identity. Classify each
+      element as Intentional, Inferred or Accidental to avoid canonising
+      incidental styling.
+
+  - id: 2
+    name: Technology & Context Assessment
+    description: >
+      Inventory the project’s languages, frameworks, runtimes, data storage,
+      infrastructure, tooling, testing and observability stacks. Identify the
+      architecture style (monolith, layered, microservice, event‑driven, etc.)
+      and risk surfaces (security, performance, scalability, maintainability).
+
+  - id: 3
+    name: Best Practices Benchmark
+    description: >
+      Define stack‑specific best practices for patterns, conventions,
+      security (aligned with OWASP), performance optimisation techniques,
+      testing strategies and coverage expectations, documentation standards,
+      architectural patterns appropriate to the domain and scale,
+      accessibility requirements (WCAG 2.1 AA), DevOps and deployment
+      practices, and error handling and logging. Focus on guidelines that
+      materially affect security, stability and developer velocity. Avoid
+      recommending framework rewrites or speculative optimisations.
+
+  - id: 4
+    name: Core Audit & Identification
+    description: >
+      Conduct a systematic audit to identify bugs, UI/UX improvements,
+      performance and structural issues, refactoring opportunities, high‑value
+      new features, missing documentation, and incomplete features or TODO
+      markers. Assign stable IDs, severity, impact and effort to each
+      finding. Detect root causes and group related issues accordingly.
+
+  - id: 5
+    name: Additional Task Suggestions
+    description: >
+      Suggest context‑specific tasks—such as security audits, testing
+      coverage analysis, dependency audits, accessibility deep dives, SEO
+      optimisation, internationalisation readiness, error monitoring
+      improvements, CI/CD enhancements, API design reviews, database schema
+      optimisation and caching strategy evaluation—that would further
+      improve the project. Provide rationale for each suggestion.
+
+  - id: 6
+    name: Confirmation & Scope Lock
+    description: >
+      Summarise findings and priorities, request user confirmation, produce
+      a tool selection matrix, and lock scope before implementation.
+      Incorporate user revisions and decisions via the handshake protocol.
+
+  - id: 7
+    name: Implementation (POC to Production Path)
+    description: >
+      Implement approved items with proof‑of‑concept code or configuration,
+      annotated with TODOs for production hardening. Respect strict‑mode
+      restrictions. Integrate UI snapshot tests into the CI pipeline.
+      Record lightweight decision records for significant choices.
+
+  - id: 8
+    name: README Consolidation & Knowledge Capture
+    description: >
+      Enhance the README and supporting documentation to incorporate
+      business context, design system, technology stack, architecture
+      overview, implementation outcomes and a technical debt registry.
+      Capture phase summaries and decisions to enable cross‑session
+      persistence without relying on model memory.
+
+  - id: 9
+    name: Post-Implementation Review & Retrospective
+    description: >
+      Validate that implemented items meet acceptance criteria, confirm
+      regressions are absent, review adherence to design and benchmark
+      standards, gather lessons learned, and update the technical debt
+      registry with any newly discovered issues or residual work.
+
+  - id: 10
+    name: Continuous Debt Resolution
+    description: >
+      Execute repeatable cycles of selection, implementation, and review
+      for outstanding technical debt until the registry is cleared.
+      Coordinate Phase 6 confirmations, Phase 7 implementations, and
+      Phase 9 reviews within each cycle while maintaining audit trail and
+      documentation updates.

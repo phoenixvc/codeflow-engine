@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env bats
+#!/usr/bin/env bats
 # Tests for install.sh
 # Run with: bats tests/scripts/test_install.bats
 # Install bats: npm install -g bats or apt install bats

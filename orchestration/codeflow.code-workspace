@@ -2,31 +2,27 @@
   "folders": [
     {
       "name": "CodeFlow Engine",
-      "path": "../codeflow-engine"
+      "path": "../engine"
     },
     {
       "name": "CodeFlow Desktop",
-      "path": "../codeflow-desktop"
+      "path": "../desktop"
     },
     {
       "name": "CodeFlow VS Code Extension",
-      "path": "../codeflow-vscode-extension"
+      "path": "../vscode-extension"
     },
     {
       "name": "CodeFlow Website",
-      "path": "../codeflow-website"
+      "path": "../website"
     },
     {
       "name": "CodeFlow Infrastructure",
-      "path": "../codeflow-infrastructure"
-    },
-    {
-      "name": "CodeFlow Azure Setup",
-      "path": "../codeflow-azure-setup"
+      "path": "./infrastructure"
     },
     {
       "name": "CodeFlow Orchestration",
-      "path": "../codeflow-orchestration"
+      "path": "."
     }
   ],
   "settings": {

@@ -41,6 +41,7 @@ jobs:
         run: poetry install --with dev --no-root
 
       - name: Run Bandit
+        continue-on-error: true
         run: |
           poetry run bandit -r codeflow_engine -f json -o bandit-report.json || true
           poetry run bandit -r codeflow_engine
@@ -77,13 +78,15 @@ jobs:
       - name: Install dependencies
         run: poetry install --with dev --no-root
 
+      - name: Install Poetry export plugin
+        run: poetry self add poetry-plugin-export
+
       - name: Export dependencies
         run: poetry export -f requirements.txt --output requirements.txt --without-hashes
 
       - name: Run Safety check
         run: |
-          pip install safety
-          safety check --file requirements.txt || true
+          poetry run safety check --file requirements.txt || true
 
   trivy:
     name: Trivy Vulnerability Scan

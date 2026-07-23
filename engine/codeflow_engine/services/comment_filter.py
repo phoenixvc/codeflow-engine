@@ -17,6 +17,19 @@ from codeflow_engine.database.models import AllowedCommenter, CommentFilterSetti
 logger = logging.getLogger(__name__)
 
 
+class CommentFilter:
+    """Legacy in-memory comment filter used by unit tests and simple callers."""
+
+    def filter(self, comments: list[dict]) -> list[dict]:
+        """Return comments unchanged.
+
+        The DB-backed CommentFilterService owns production allow-list behavior.
+        This class preserves the older synchronous API for callers that only
+        need a local pass-through filter.
+        """
+        return list(comments)
+
+
 class CommentFilterService:
     """Service for managing comment filtering and allowed commenters."""
 

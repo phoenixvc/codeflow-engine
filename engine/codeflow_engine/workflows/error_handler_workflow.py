@@ -13,7 +13,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 from codeflow_engine.actions.ai_linting_fixer.display import DisplayConfig, OutputMode
 from codeflow_engine.actions.ai_linting_fixer.error_handler import (
@@ -30,6 +30,8 @@ logger = logging.getLogger(__name__)
 
 class ErrorHandlerWorkflowInputs(BaseModel):
     """Inputs for the error handler workflow."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
     # Error information
     exception: Exception | None = None
