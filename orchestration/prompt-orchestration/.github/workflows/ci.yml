@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: ["**"]
 
+permissions:
+  contents: read
+
 jobs:
   governance:
     runs-on: ubuntu-latest
@@ -18,39 +21,42 @@ jobs:
       - name: Verify commit messages and changed files
         env:
           # Audit ID regex pattern; adjust categories as needed.
-          AUDIT_ID_PATTERN: '(BUG|UX|PERF|REF|FEATURE|DOC|TD)-[0-9]+'
+          AUDIT_ID_PATTERN: '(^|[^[:alnum:]])(BUG|UX|PERF|REF|FEATURE|DOC|TD)-[0-9]+($|[^[:alnum:]])'
         run: |
           set -e
-          # Determine commit range.  For pull requests, use the merge base.  Otherwise check the last commit.
+          # Determine commit range. For pull requests, use the PR base/head.
+          # For push events, use the event before SHA so multi-commit pushes are checked.
           if [ "$GITHUB_EVENT_NAME" = "pull_request" ]; then
             base_sha=$(jq -r '.pull_request.base.sha' < "$GITHUB_EVENT_PATH")
             head_sha=$(jq -r '.pull_request.head.sha' < "$GITHUB_EVENT_PATH")
             range="$base_sha..$head_sha"
           else
-            # For push events, compare against the previous commit on the same branch.
-            range="HEAD^..HEAD"
+            before_sha=$(jq -r '.before' < "$GITHUB_EVENT_PATH")
+            zero_sha="0000000000000000000000000000000000000000"
+            if [ "$before_sha" = "$zero_sha" ]; then
+              range="$GITHUB_SHA"
+            else
+              range="$before_sha..$GITHUB_SHA"
+            fi
           fi
 
           echo "Checking commits in range $range"
-          # Extract commit messages in the range.
-          messages=$(git log --pretty=%B --no-merges "$range")
           ok=1
           while IFS= read -r msg; do
-            # Skip empty lines produced by git log when multiple commits exist
             if [ -z "$msg" ]; then
               continue
             fi
-            echo "Evaluating commit message: $msg"
+            echo "Evaluating commit subject: $msg"
             if ! echo "$msg" | grep -Eq "$AUDIT_ID_PATTERN"; then
-              echo "::error::Commit message does not contain a valid audit ID (expected pattern $AUDIT_ID_PATTERN): $msg"
+              echo "::error::Commit subject does not contain a valid audit ID (expected pattern $AUDIT_ID_PATTERN): $msg"
               ok=0
             fi
-          done <<< "$messages"
+          done < <(git log --pretty=%s --no-merges "$range")
 
           # Determine changed files in the range.
-          changed=$(git diff --name-only "$range")
-          echo "Changed files: $changed"
-          for file in $changed; do
+          echo "Changed files:"
+          while IFS= read -r -d '' file; do
+            echo "$file"
             # Allow modifications in specific directories or root README.
             case "$file" in
               prompts/*|configs/*|docs/*|schemas/*|.github/*|src/*|tests/*|README.md)
@@ -59,7 +65,7 @@ jobs:
                 echo "::error::File $file is outside permitted directories.  Modify only prompts/, configs/, docs/, schemas/, .github/, src/, tests/ or README.md."
                 ok=0;;
             esac
-          done
+          done < <(git diff --name-only -z "$range")
 
           if [ "$ok" -ne 1 ]; then
             echo "Governance checks failed."

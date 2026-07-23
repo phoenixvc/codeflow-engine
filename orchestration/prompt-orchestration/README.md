@@ -4,7 +4,7 @@ This directory packages a complete **AI governance framework** for performing en
 
 ## Overview
 
-At its core, this framework breaks down software remediation into ten canonical phases (0–10).  Each phase has clear objectives, allowed operations and context budgets, enforced by a **runtime contract** codified in the prompts.  The prompts are organised to guide an AI assistant step-by-step through discovery, design analysis, technology assessment, deep auditing, planning, implementation, post-implementation review and continuous debt resolution.
+At its core, this framework breaks down software remediation into eleven canonical phases (0–10).  Each phase has clear objectives, allowed operations and context budgets, enforced by a **runtime contract** codified in the prompts.  The prompts are organised to guide an AI assistant step-by-step through discovery, design analysis, technology assessment, deep auditing, planning, implementation, post-implementation review and continuous debt resolution.
 
 Key design principles include:
 
@@ -17,7 +17,7 @@ Key design principles include:
 
 ## Repository Structure
 
-```
+```text
 orchestration/prompt-orchestration/
 ├── prompts/           # Canonical prompt suite divided by phase
 │   ├── meta-prompt.md        # Orchestrator & runtime contract
@@ -57,7 +57,7 @@ Each prompt must append a standard footer summarising proposed file changes, blo
 
 ### Configurations & Schemas
 
-* **phases.yaml** describes each of the ten phases, allowing external tooling to reason about the workflow at a high level.
+* **phases.yaml** describes each of the eleven phases, allowing external tooling to reason about the workflow at a high level.
 * **authority-model.yaml** classifies files into `first_party`, `first_party_submodule` and `third_party` with editability rules.  Submodules and third‑party dependencies are treated as read‑only data.
 * **quality-gates.yaml** defines severity levels and merge blockers.  Currently, any unresolved critical issue blocks merging.
 * **output-schema.json** provides a formal JSON schema for phase output files or API responses, ensuring consistency across runs and tooling.
@@ -70,8 +70,8 @@ The `docs` directory contains supporting materials.  The **AI Tool Instruction A
 
 A GitHub Action (`.github/workflows/ci.yml`) enforces key governance rules on every push and pull request:
 
-* **Commit messages** must contain at least one audit ID (e.g. `BUG-07`).
-* **Changed files** must reside in permitted directories (`prompts/`, `configs/`, `docs/`, `schemas/`, `.github/`, `src/`, `tests/` or the root README).  Submodules and third‑party packages must not be modified.
+* **Commit messages** must be validated as complete commit records and contain at least one audit ID (e.g. `BUG-07`).
+* **Changed files** must be read with NUL-safe or quoted filename handling and must reside in permitted root-relative paths (`prompts/*`, `configs/*`, `docs/*`, `schemas/*`, `.github/*`, `src/*`, `tests/*` or the root README).  Submodules and third‑party packages must not be modified.
 * The job fails if violations are detected, blocking the merge.
 
 > Engineers implementing this pipeline should customise the file patterns and audit‑ID regex to suit their projects.  See `ci.yml` for details.

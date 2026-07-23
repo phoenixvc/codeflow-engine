@@ -52,8 +52,10 @@ Provide a concise bullet list of key assumptions, alternative interpretations an
 
 ### Check for Completion
 
-- If the technical debt registry still contains unresolved items, restart at Load Technical Debt Registry for another cycle.
-- Otherwise, conclude Phase 10 and summarise the debt resolution process.
+- Restart at Load Technical Debt Registry only while actionable unresolved items remain within a bounded cycle limit.
+- Before starting Phase 10, set a maximum cycle count; default to three cycles when no explicit limit is provided.
+- Conclude Phase 10 when all remaining items are blocked, deferred, non-actionable, outside the allowed scope, or when the user aborts.
+- If the cycle limit is reached, conclude with a summary of completed work, remaining blocked or deferred items, and the next human decision required.
 
 ### Document Cycle Summary
 

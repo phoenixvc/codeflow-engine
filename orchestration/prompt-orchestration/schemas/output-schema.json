@@ -6,7 +6,7 @@
     "phase": {
       "type": "integer",
       "minimum": 0,
-      "maximum": 8,
+      "maximum": 10,
       "description": "The numeric identifier of the phase that produced this output."
     },
     "summary": {
@@ -67,7 +67,7 @@
             "required": ["files"]
           }
         },
-        "required": ["id", "category", "description"]
+        "required": ["id", "category", "description", "evidence"]
       }
     }
   },

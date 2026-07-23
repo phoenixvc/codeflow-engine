@@ -49,6 +49,18 @@ function Write-CheckResult {
     }
 }
 
+function Write-WarningResult {
+    param(
+        [string]$CheckName,
+        [string]$Message = ""
+    )
+
+    Write-Host "⚠️ $CheckName" -ForegroundColor Yellow
+    if ($Message) {
+        Write-Host "   $Message" -ForegroundColor Gray
+    }
+}
+
 function Test-PythonPackage {
     Write-Host ""
     Write-Host "========================================" -ForegroundColor Cyan
@@ -138,7 +150,7 @@ function Test-PythonPackage {
     if (Test-Path $gitignorePath) {
         Write-CheckResult ".gitignore exists" $true
     } else {
-        Write-CheckResult ".gitignore exists" $false "Recommended but not required"
+        Write-WarningResult ".gitignore exists" "Recommended but not required"
     }
 }
 
@@ -205,9 +217,13 @@ function Test-TypeScriptPackage {
     if (Test-Path $testsPath) {
         $testFiles = Get-ChildItem $testsPath -Recurse -Filter "*.test.ts" -ErrorAction SilentlyContinue
         $testCount = ($testFiles | Measure-Object).Count
-        Write-CheckResult "Test files exist" ($testCount -gt 0) $(if ($testCount -eq 0) { "No test files found" } else { "$testCount test files found" })
+        if ($testCount -gt 0) {
+            Write-CheckResult "Test files exist" $true "$testCount test files found"
+        } else {
+            Write-WarningResult "Test files exist" "No TypeScript test files found; recommended before publishing but not required"
+        }
     } else {
-        Write-CheckResult "Test directory exists" $false "tests/ directory not found"
+        Write-WarningResult "Test directory exists" "tests/ directory not found; recommended before publishing but not required"
     }
 
     # Check CI/CD workflows

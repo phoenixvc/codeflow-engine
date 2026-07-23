@@ -86,8 +86,7 @@ jobs:
 
       - name: Run Safety check
         run: |
-          pip install safety
-          safety check --file requirements.txt || true
+          poetry run safety check --file requirements.txt || true
 
   trivy:
     name: Trivy Vulnerability Scan

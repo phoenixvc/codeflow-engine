@@ -36,7 +36,7 @@ Submodules and packages may be read and referenced, never silently modified.  Ex
 
 | Operation     | Scope              | Required Fields              |
 | ------------- | ------------------ | ---------------------------- |
-| `READ_FILE`   | first‑party only   | path                         |
+| `READ_FILE`   | all readable authority classes (`first_party`, `first_party_submodule`, `third_party`) | path |
 | `CREATE_FILE` | allowed paths only | path, content, justification |
 | `UPDATE_FILE` | approved IDs only  | path, diff, audit ID         |
 
@@ -65,7 +65,7 @@ Each phase summary must be ≤500 tokens.  Individual items (e.g. findings) must
 
 Every prompt response must end with four sections:
 
-```
+```text
 ### Proposed File Changes
 | File | Action | Justification | Audit ID |
 | ---- | ------ | ------------- | -------- |

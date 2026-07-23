@@ -40,7 +40,7 @@ Identify and document the following (if fewer than the required minimum genuinel
 2. **UI/UX Improvements** (≥ 7): usability, accessibility (WCAG 2.1 AA), visual consistency, interaction flows.  Note deviations from the design system or principles established in earlier phases.
 3. **Performance & Structural Improvements** (≥ 7): runtime efficiency, memory usage, bundle size, database queries, caching, architectural issues, scalability, maintainability.
 4. **Refactoring Opportunities** (≥ 7): naming improvements, complexity reduction, duplication elimination, pattern improvements while preserving behaviour.
-5. **New Features** (exactly 3): highest‑value additions aligned with the project’s purpose; justify user value, feasibility, and integration points.
+5. **New Features** (up to 3): highest‑value additions aligned with the project’s purpose; justify user value, feasibility, and integration points. Fewer than three is acceptable when evidence does not support three high-value additions.
 6. **Missing Documentation** (≥ 7): gaps in API docs, architecture diagrams, user guides, deployment guides, contributing guidelines.
 7. **Incomplete Features & TODOs**: systematic audit of incomplete implementations and technical debt markers (TODO, FIXME, HACK, NOTE, etc.), including location, description, impact, and estimated effort.
 

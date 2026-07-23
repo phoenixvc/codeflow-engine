@@ -2,7 +2,7 @@
   "folders": [
     {
       "name": "CodeFlow Engine",
-      "path": ".."
+      "path": "../engine"
     },
     {
       "name": "CodeFlow Desktop",
