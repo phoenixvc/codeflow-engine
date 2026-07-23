@@ -8,12 +8,16 @@ on:
       - "engine/**"
       - ".github/workflows/deploy-autopr-engine.yml"
       - ".github/app-manifest.yml"
+      - ".azure/pipeline-setup.md"
+      - "scripts/setup-azure-auth-for-pipeline.ps1"
   pull_request:
     paths:
       - "engine/**"
       - ".github/workflows/deploy-autopr-engine.yml"
       - ".github/app-manifest.yml"
       - ".codeflow.yml"
+      - ".azure/pipeline-setup.md"
+      - "scripts/setup-azure-auth-for-pipeline.ps1"
   workflow_dispatch:
 
 env:
@@ -118,20 +122,40 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     if: (github.ref == 'refs/heads/master' && github.event_name == 'push') || github.event_name == 'workflow_dispatch'
+    environment: production
+    permissions:
+      contents: read
+      id-token: write
     steps:
       - name: Azure Login
         uses: azure/login@v2
         with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
 
       - name: Update existing Container App
+        env:
+          RESOURCE_GROUP: ${{ vars.AZURE_RESOURCE_GROUP }}
+          CONTAINER_APP: ${{ vars.AZURE_CONTAINER_APP }}
+          IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}
         run: |
-          RESOURCE_GROUP="prod-rg-san-codeflow"
-          CONTAINER_APP="prod-codeflow-san-app"
-          IMAGE="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.ref_name }}"
+          missing=0
+          for name in RESOURCE_GROUP CONTAINER_APP IMAGE; do
+            if [ -z "${!name}" ]; then
+              echo "::error::Missing required deployment value: $name"
+              missing=1
+            fi
+          done
+
+          if [ "$missing" -ne 0 ]; then
+            echo "::error::Configure the production environment variables documented in .azure/pipeline-setup.md."
+            exit 1
+          fi
 
           if ! az containerapp show -n "$CONTAINER_APP" -g "$RESOURCE_GROUP" >/dev/null; then
-            echo "::error::Container App $CONTAINER_APP does not exist in $RESOURCE_GROUP. Create infrastructure from phoenixvc/codeflow-infrastructure first."
+            echo "::error::Cannot verify Container App $CONTAINER_APP in $RESOURCE_GROUP."
+            echo "::error::Confirm the app exists and the pipeline identity has access before deploying this image."
             exit 1
           fi
 

@@ -15,7 +15,7 @@ jobs:
       - name: Quick checkout for config
         uses: actions/checkout@v4
         with:
-          sparse-checkout: configs/config.yaml
+          sparse-checkout: engine/configs/config.yaml
           sparse-checkout-cone-mode: false
 
       - name: Check if commenter is excluded bot
@@ -25,7 +25,7 @@ jobs:
           echo "Checking if '$COMMENTER' is an excluded bot..."
 
           # Check if bot exclusions are enabled
-          BOT_EXCLUSIONS_ENABLED=$(yq '.comment_analyzer.bot_exclusions.enabled // false' configs/config.yaml)
+          BOT_EXCLUSIONS_ENABLED=$(yq '.comment_analyzer.bot_exclusions.enabled // false' engine/configs/config.yaml)
           if [ "$BOT_EXCLUSIONS_ENABLED" != "true" ]; then
             echo "Bot exclusions disabled, processing comment"
             echo "is_excluded=false" >> $GITHUB_OUTPUT
@@ -33,7 +33,7 @@ jobs:
           fi
 
           # Check excluded users list
-          EXCLUDED_USERS=$(yq '.comment_analyzer.bot_exclusions.excluded_users[]' configs/config.yaml 2>/dev/null || echo "")
+          EXCLUDED_USERS=$(yq '.comment_analyzer.bot_exclusions.excluded_users[]' engine/configs/config.yaml 2>/dev/null || echo "")
           for user in $EXCLUDED_USERS; do
             # Remove quotes from YAML output
             user=$(echo "$user" | tr -d '"')
@@ -45,7 +45,7 @@ jobs:
           done
 
           # Check for [bot] suffix if enabled
-          EXCLUDE_BOT_SUFFIX=$(yq '.comment_analyzer.bot_exclusions.exclude_bot_suffix // false' configs/config.yaml)
+          EXCLUDE_BOT_SUFFIX=$(yq '.comment_analyzer.bot_exclusions.exclude_bot_suffix // false' engine/configs/config.yaml)
           if [ "$EXCLUDE_BOT_SUFFIX" = "true" ]; then
             if [[ "$COMMENTER" == *"[bot]" ]]; then
               echo "User '$COMMENTER' has [bot] suffix, skipping"
@@ -61,7 +61,7 @@ jobs:
         if: steps.check_bot.outputs.is_excluded != 'true'
         id: check_config
         run: |
-          ENABLED=$(yq '.comment_analyzer.enabled // false' configs/config.yaml)
+          ENABLED=$(yq '.comment_analyzer.enabled // false' engine/configs/config.yaml)
           echo "result=$ENABLED" >> $GITHUB_OUTPUT
 
       - name: Full checkout
