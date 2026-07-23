@@ -41,11 +41,12 @@ exception documented next to the stack.
 
 ## Naming
 
-Current Codeflow resource names use:
+Current Codeflow resource names follow the ADR-0027 style: structured identifiers with no trailing
+region suffix. Region remains expressed by the resource group location.
 
-- Resource group: `prod-rg-san-codeflow`
-- Website Static Web App: `prod-stapp-san-codeflow`
-- Runtime Container App: `prod-codeflow-san-app`
+- Resource group: `pvc-prod-codeflow-rg`
+- Website Static Web App: `pvc-prod-codeflow-swa`
+- Runtime Container App: `pvc-prod-codeflow-api`
 
-Keep future names aligned with `{env}-{resource-type}-{region}-codeflow` unless a provider
-constraint requires otherwise.
+Keep future names aligned with `pvc-{env}-codeflow-{type}` unless a provider constraint requires
+otherwise. Storage accounts and ACR names omit dashes.

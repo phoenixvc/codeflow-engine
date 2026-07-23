@@ -5,6 +5,8 @@ name: Validate Templates
 
 on:
   push:
+    branches:
+      - master
     paths:
       - "engine/templates/**/*.yml"
       - "engine/templates/**/*.yaml"
