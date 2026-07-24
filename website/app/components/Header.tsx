@@ -5,7 +5,7 @@ import AlphaBadge from "./AlphaBadge";
 import ThemeToggle from "./ThemeToggle";
 
 interface HeaderProps {
-  currentPage?: 'home' | 'installation' | 'integration' | 'download';
+  currentPage?: 'home' | 'installation' | 'integration' | 'download' | 'login' | 'signup';
 }
 
 export default function Header({ currentPage = 'home' }: HeaderProps) {
@@ -61,6 +61,20 @@ export default function Header({ currentPage = 'home' }: HeaderProps) {
           >
             GitHub
           </a>
+          <Link
+            href="/login"
+            className={navLinkClass('login')}
+            aria-current={isCurrentPage('login') ? 'page' : undefined}
+          >
+            Sign in
+          </Link>
+          <Link
+            href="/signup"
+            className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-4 py-2 font-semibold text-white transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-lg"
+            aria-current={isCurrentPage('signup') ? 'page' : undefined}
+          >
+            Sign up
+          </Link>
           <ThemeToggle />
         </div>
       </nav>
