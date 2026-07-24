@@ -2,7 +2,6 @@ import Link from "next/link";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { FeatureCard } from "./components/FeatureCard";
-import { APP_URL } from "./config/constants";
 
 export default function Home() {
   return (
@@ -24,16 +23,14 @@ export default function Home() {
             issue creation, and multi-agent collaboration.
           </p>
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href={APP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/login"
               className="rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 text-lg font-semibold text-white transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-lg"
             >
               Try Alpha Preview
-            </a>
+            </Link>
             <Link
-              href="/installation"
+              href="/signup"
               className="rounded-lg bg-slate-800 px-8 py-3 text-lg font-semibold text-white transition-colors hover:bg-slate-700 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
               Get Started
@@ -85,14 +82,12 @@ export default function Home() {
               of AI-powered PR automation and help us improve with your feedback.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href={APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/login"
                 className="inline-block rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-3 text-lg font-semibold text-white transition-all hover:from-blue-700 hover:to-purple-700 hover:shadow-lg"
               >
                 Access Alpha Preview →
-              </a>
+              </Link>
               <a
                 href="https://github.com/JustAGhosT/codeflow-engine/discussions"
                 target="_blank"
@@ -115,14 +110,12 @@ export default function Home() {
               Get started with CodeFlow Engine alpha today and experience the future of PR automation.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-              <a
-                href={APP_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                href="/login"
                 className="inline-block rounded-lg bg-gradient-to-r from-blue-500 to-purple-500 px-8 py-3 text-lg font-semibold text-white transition-all hover:from-blue-600 hover:to-purple-600 hover:shadow-lg"
               >
                 Try Alpha Preview
-              </a>
+              </Link>
               <Link
                 href="/installation"
                 className="inline-block rounded-lg border-2 border-slate-300 bg-white px-8 py-3 text-lg font-semibold text-slate-900 transition-colors hover:border-slate-400 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:hover:border-slate-500 dark:hover:bg-slate-700"
