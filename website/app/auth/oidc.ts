@@ -126,15 +126,7 @@ export async function startMystiraIdentityFlow(intent: CodeflowAuthIntent): Prom
 }
 
 export async function completeMystiraIdentityFlow(code: string, state: string): Promise<TokenResponse> {
-  const rawRequest = sessionStorage.getItem(CODEFLOW_AUTH_STATE_KEY);
-  if (!rawRequest) {
-    throw new Error("Missing saved sign-in request. Start login again.");
-  }
-
-  const request = JSON.parse(rawRequest) as StoredAuthRequest;
-  if (request.state !== state) {
-    throw new Error("Sign-in state did not match. Start login again.");
-  }
+  const request = getStoredAuthRequest(state);
 
   const body = new URLSearchParams();
   body.set("grant_type", "authorization_code");
@@ -160,6 +152,25 @@ export async function completeMystiraIdentityFlow(code: string, state: string): 
   sessionStorage.setItem(CODEFLOW_SESSION_KEY, JSON.stringify(tokenResponse));
   sessionStorage.removeItem(CODEFLOW_AUTH_STATE_KEY);
   return tokenResponse;
+}
+
+export function consumeMystiraIdentityRequest(state: string | null): void {
+  getStoredAuthRequest(state);
+  sessionStorage.removeItem(CODEFLOW_AUTH_STATE_KEY);
+}
+
+function getStoredAuthRequest(state: string | null): StoredAuthRequest {
+  const rawRequest = sessionStorage.getItem(CODEFLOW_AUTH_STATE_KEY);
+  if (!rawRequest) {
+    throw new Error("Missing saved sign-in request. Start login again.");
+  }
+
+  const request = JSON.parse(rawRequest) as StoredAuthRequest;
+  if (request.state !== state) {
+    throw new Error("Sign-in state did not match. Start login again.");
+  }
+
+  return request;
 }
 
 async function validateIdToken(idToken: string | undefined, request: StoredAuthRequest): Promise<void> {

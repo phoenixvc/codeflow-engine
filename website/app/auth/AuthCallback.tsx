@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { completeMystiraIdentityFlow } from "./oidc";
+import { completeMystiraIdentityFlow, consumeMystiraIdentityRequest } from "./oidc";
 
 type CallbackState = "loading" | "success" | "error";
 
@@ -25,19 +25,37 @@ export default function AuthCallback() {
       const returnedState = params.get("state");
 
       if (error) {
-        setState("error");
-        setMessage(params.get("error_description") ?? error);
+        try {
+          consumeMystiraIdentityRequest(returnedState);
+          window.history.replaceState({}, document.title, "/auth/callback");
+          setState("error");
+          setMessage(
+            error === "access_denied"
+              ? "Sign-in was cancelled."
+              : "Mystira Identity did not complete sign-in.",
+          );
+        } catch (ex) {
+          setState("error");
+          setMessage(ex instanceof Error ? ex.message : "Unable to validate sign-in.");
+        }
         return;
       }
 
-      if (!code || !returnedState) {
-        setState("error");
-        setMessage("Mystira Identity did not return an authorization code.");
+      if (!code) {
+        try {
+          consumeMystiraIdentityRequest(returnedState);
+          window.history.replaceState({}, document.title, "/auth/callback");
+          setState("error");
+          setMessage("Mystira Identity did not return an authorization code.");
+        } catch (ex) {
+          setState("error");
+          setMessage(ex instanceof Error ? ex.message : "Unable to validate sign-in.");
+        }
         return;
       }
 
       try {
-        await completeMystiraIdentityFlow(code, returnedState);
+        await completeMystiraIdentityFlow(code, returnedState ?? "");
         window.history.replaceState({}, document.title, "/auth/callback");
         setState("success");
         setMessage("Signed in with Mystira Identity.");
